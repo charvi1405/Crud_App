@@ -6,12 +6,18 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///employee.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
-app.app_context().push()
+# with app.app_context():
+#     db.create_all()
+
 
 class Employee(db.Model):
     sno= db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), nullable=False)
+
+with app.app_context():
+    db.create_all()
+
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -31,8 +37,9 @@ def about():
 @app.route("/delete/<int:sno>")
 def delete(sno):
     employee = Employee.query.filter_by(sno=sno).first()
-    db.session.delete(employee)
-    db.session.commit()
+    if employee:
+        db.session.delete(employee)
+        db.session.commit()
     return redirect("/")
 
 @app.route("/update/<int:sno>", methods=['GET', 'POST'])
@@ -56,4 +63,4 @@ def contact():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
