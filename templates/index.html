@@ -3,13 +3,25 @@
 <div class="container">
   <h1 class="text-center"> Add Employee Data </h1>
   <form action="/" method="POST">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        
+  <form action="/" method="POST">
     <div class="mb-3">
       <label for="" class="form-label"> Full Name</label>
-      <input type="text" class="form-control" id="" name="name" placeholder="Enter Full name">
+      <input type="text" class="form-control" id="" name="name" placeholder="Enter Full name" >
 </div>
     <div class="mb-3">
       <label for="" class="form-label"> Email address</label>
-      <input type="email" class="form-control" id="" name="email" placeholder="Enter email">
+      <input type="email" class="form-control" id="" name="email" placeholder="Enter email" >
 </div>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
